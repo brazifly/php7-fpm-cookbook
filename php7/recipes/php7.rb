@@ -59,7 +59,7 @@ end
 
 # Clone PHP 7 repository
 git "clone_php7" do
-    destination "/home/#{node['deploy']['user']}/php7"
+    destination "/usr/local/src/php7"
     repository "https://git.php.net/repository/php-src.git"
     action :sync
     depth 1
@@ -70,7 +70,7 @@ end
 
 # Build PHP 7 fpm
 bash "build_php7_fpm" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code <<-EOH
@@ -81,7 +81,7 @@ end
 
 # Configure php7 fpm build
 bash "configure_php7_fpm_build" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code <<-EOH
@@ -92,7 +92,7 @@ end
 
 # Make PHP 7 fpm
 bash "make_php7_fpm" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code "make"
@@ -101,7 +101,7 @@ end
 
 # Install PHP 7 fpm
 bash "install_php7_fpm" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code "make install"
@@ -114,7 +114,7 @@ file "create_php_fpm_ini" do
   path "/etc/php7/fpm/php.ini"
   owner "root"
   group "root"
-  content lazy { IO.read("/home/#{node['deploy']['user']}/php7/php.ini-production") }
+  content lazy { IO.read("/usr/local/src/php7/php.ini-production") }
   not_if { php7_installed? }
 end
 
@@ -135,7 +135,7 @@ file "create_php_fpm_conf" do
   path "/etc/php7/fpm/php-fpm.conf"
   owner "root"
   group "root"
-  content lazy { IO.read("/home/#{node['deploy']['user']}/php7/sapi/fpm/php-fpm.conf.in") }
+  content lazy { IO.read("/usr/local/src/php7/sapi/fpm/php-fpm.conf.in") }
   not_if { php7_installed? }
 end
 
@@ -178,7 +178,7 @@ file "create_php_fpm_init" do
   owner "root"
   group "root"
   mode "0755"
-  content lazy { IO.read("/home/#{node['deploy']['user']}/php7/sapi/fpm/init.d.php-fpm") }
+  content lazy { IO.read("/usr/local/src/php7/sapi/fpm/init.d.php-fpm") }
   not_if { php7_installed? }
 end
 
@@ -204,7 +204,7 @@ end
 
 # SAPI cleanup
 bash "sapi_cleanup" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code "make distclean"
@@ -213,7 +213,7 @@ end
 
 # Build PHP 7 cli
 bash "build_php7_cli" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code <<-EOH
@@ -224,7 +224,7 @@ end
 
 # Configure php cli build
 bash "configure_php7_cli_build" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code <<-EOH
@@ -235,7 +235,7 @@ end
 
 # Make PHP 7 cli
 bash "make_php7_cli" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code "make"
@@ -244,7 +244,7 @@ end
 
 # Install PHP 7 cli
 bash "install_php7_cli" do
-    cwd "/home/#{node['deploy']['user']}/php7"
+    cwd "/usr/local/src/php7"
     user "root"
     group "root"
     code "make install"
@@ -257,7 +257,7 @@ file "create_php_cli_ini" do
   path "/etc/php7/cli/php.ini"
   owner "root"
   group "root"
-  content lazy { IO.read("/home/#{node['deploy']['user']}/php7/php.ini-production") }
+  content lazy { IO.read("/usr/local/src/php7/php.ini-production") }
   not_if { php7_installed? }
 end
 
