@@ -63,8 +63,8 @@ git "clone_php7" do
     repository "https://git.php.net/repository/php-src.git"
     action :sync
     depth 1
-    branch "PHP-7.0.2"
-    checkout_branch "PHP-7.0.2"
+    branch "PHP-#{node['php7']['version']}"
+    checkout_branch "PHP-#{node['php7']['version']}"
     not_if { php7_installed? }
 end
 
@@ -294,7 +294,7 @@ link "enable_opcache_fpm" do
   target_file '/etc/php7/fpm/conf.d/opcache.ini'
   to '/etc/php7/conf.d/opcache.ini'
   link_type :symbolic
-   not_if { php7_installed? }
+  not_if { php7_installed? }
 end
 
 # Enable opcache cli
