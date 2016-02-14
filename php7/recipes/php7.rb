@@ -24,6 +24,7 @@ end
 
 # Install needed packages
 package [
+    "make",
     "bison",
     "g++",
     "autoconf",
